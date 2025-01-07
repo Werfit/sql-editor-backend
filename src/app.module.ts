@@ -8,8 +8,8 @@ import { DatabaseService } from "./database/database.service";
 import { DataSource } from "typeorm";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { UserModule } from "./user/user.module";
-import { AccessTokenModule } from './access-token/access-token.module';
-import { WorkspaceModule } from './workspace/workspace.module';
+import { AccessTokenModule } from "./access-token/access-token.module";
+import { WorkspaceModule } from "./workspace/workspace.module";
 import jwtConfig from "./config/jwt.config";
 
 @Module({

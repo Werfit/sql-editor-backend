@@ -25,6 +25,22 @@ export class WorkspaceService {
     });
   }
 
+  async get(workspaceId: Workspace["id"]) {
+    return this.workspaceRepository.findOneBy({
+      id: workspaceId,
+    });
+  }
+
+  async isOwnedBy(workspaceId: Workspace["id"], userId: User["id"]) {
+    const workspaces = await this.workspaceRepository.countBy({
+      id: workspaceId,
+      creator: {
+        id: userId,
+      },
+    });
+    return workspaces === 1;
+  }
+
   async create(data: CreateWorkspaceDTO, userId: User["id"]) {
     const workspace = this.workspaceRepository.create({
       name: data.name,

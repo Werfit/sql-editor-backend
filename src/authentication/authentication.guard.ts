@@ -2,7 +2,7 @@ import {
   Injectable,
   CanActivate,
   ExecutionContext,
-  ForbiddenException,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { Request } from "express";
 import { Observable } from "rxjs";
@@ -27,14 +27,14 @@ export class AuthGuard implements CanActivate {
     const authorization = request.headers["authorization"];
 
     if (!authorization) {
-      throw new ForbiddenException("Not authenticated");
+      throw new UnauthorizedException("Not authenticated");
     }
 
     const token = authorization.replace("Bearer ", "");
     const payload = this.accessTokenService.verifyAccessToken(token);
 
     if (!payload) {
-      throw new ForbiddenException("Not authenticated");
+      throw new UnauthorizedException("Not authenticated");
     }
 
     const user = await this.userService.findOneBy({
@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate {
     });
 
     if (!user) {
-      throw new ForbiddenException("Not authenticated");
+      throw new UnauthorizedException("Not authenticated");
     }
 
     request.user = {

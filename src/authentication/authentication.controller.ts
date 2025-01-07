@@ -2,11 +2,10 @@ import {
   BadRequestException,
   Body,
   Controller,
-  ForbiddenException,
   Get,
   NotFoundException,
   Post,
-  Req,
+  UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
 import { SignUpRequestDTO } from "./dto/sign-up.dto";
@@ -61,7 +60,7 @@ export class AuthenticationController {
     });
 
     if (!user) {
-      throw new ForbiddenException("Invalid refresh token");
+      throw new UnauthorizedException("Invalid refresh token");
     }
 
     const payload = this.accessTokenService.verifyRefreshToken(
@@ -70,7 +69,7 @@ export class AuthenticationController {
 
     if (!payload) {
       await this.userService.updateSession(user.id, null);
-      throw new ForbiddenException("Invalid refresh token");
+      throw new UnauthorizedException("Invalid refresh token");
     }
 
     const accessToken = this.accessTokenService.getAccessToken({
